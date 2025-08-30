@@ -1,0 +1,184 @@
+/* Full page */
+.auth-page {
+    min-height: 100vh;
+    background: #000;
+    /* Black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Toggle buttons */
+.auth-toggle {
+    position: relative;
+    top: 0px;
+    right: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    background: #111;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.auth-toggle button {
+    padding: 10px 18px;
+    border: none;
+    background: transparent;
+    color: #999;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.auth-toggle .active {
+    background: #00c853;
+    /* Green */
+    color: #fff;
+    border-radius: 30px;
+}
+
+/* Card */
+.auth-card {
+    background: #1e1e1e;
+    padding: 40px;
+    border-radius: 10%;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    max-width: 400px;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+.auth-card .logo {
+    font-size: 40px;
+    margin-bottom: 15px;
+}
+
+.auth-card h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+/* Input */
+.input-box {
+    background: transparent;
+    border: 2px solid #555;
+    border-radius: 30px;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+}
+
+.input-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #fff;
+    font-size: 16px;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.next-btn {
+    background: #00c853;
+    /* Green button */
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.next-btn:hover {
+    background: #00e676;
+}
+
+.actions a {
+    color: #bbb;
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Wave at bottom */
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 200px;
+    background: #000000;
+    /* Green wave */
+    border-radius: 50% 50% 0 0;
+    transform: translateX(-25%);
+    z-index: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 30px;
+        max-width: 90%;
+    }
+
+    .auth-card h2 {
+        font-size: 18px;
+    }
+
+    .next-btn {
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-toggle {
+        top: 15px;
+        right: 15px;
+    }
+
+    .auth-toggle button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .auth-card {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .auth-card h2 {
+        font-size: 16px;
+    }
+
+    .input-box {
+        padding: 10px 15px;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .next-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
