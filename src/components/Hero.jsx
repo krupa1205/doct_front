@@ -31,7 +31,7 @@ const Hero = () => {
     hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
     visible: (i) => ({ opacity: 1, y: 0, filter: "blur(0px)", transition: { delay: i * 0.1 + 0.5, duration: 0.5 } }),
   };
-  const heroWords = ["Intelligence,", "in,", "Every", "Diagnosis"];
+  const heroWords = ["Intelligence,", "in", "Every", "Diagnosis"];
 
   return (
     <section className="relative min-h-screen w-full flex items-center justify-start pt-32 md:pt-40 pb-20 px-6">
