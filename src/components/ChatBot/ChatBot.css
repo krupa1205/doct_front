@@ -1,0 +1,80 @@
+/* frontend/src/components/ChatBot/ChatBot.css */
+:root {
+    /* Default theme */
+    --brand: #3b6b24;
+    --brand-600: #3b6b24;
+    --brand-700: #3b6b24;
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --text: #1f2937; /* slate-800 */
+    --muted: #6b7280; /* slate-500 */
+    --border: #e5e7eb; /* gray-200 */
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0f14;
+      --panel: #10151b;
+      --text: #e5e7eb;
+      --muted: #9aa4b2;
+      --border: #1f2937;
+    }
+  }
+  
+  /* Custom scrollbar for chat body */
+  .chat-body::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .chat-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+  }
+  
+  /* Animation for typing indicator */
+  @keyframes bounce {
+    0%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-4px);
+    }
+  }
+  
+  .animate-bounce {
+    animation: bounce 1.2s infinite;
+  }
+  
+  /* Pulse animation for the button */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(230, 35, 35, 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 18px rgba(230, 35, 35, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(230, 35, 35, 0);
+    }
+  }
+  
+  .animate-pulse {
+    animation: pulse 2.2s infinite;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 480px) {
+    .chat-popup {
+      right: 12px !important;
+      bottom: 88px !important;
+      width: calc(100% - 24px) !important;
+    }
+    
+    .chat-body {
+      max-height: 56vh !important;
+    }
+    
+    .bubble {
+      max-width: 70% !important;
+    }
+  }

@@ -60,7 +60,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-page mt-10">
       {/* Toggle buttons */}
       <div className="auth-toggle">
         <button
