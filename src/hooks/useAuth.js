@@ -93,6 +93,27 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUser
   };
+  const registerDoctor = async (doctorData) => {
+    try {
+      const response = await fetch('/api/doctors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getToken()}`
+        },
+        body: JSON.stringify(doctorData)
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || 'Doctor registration failed');
+      }
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   return (
     <AuthContext.Provider value={value}>

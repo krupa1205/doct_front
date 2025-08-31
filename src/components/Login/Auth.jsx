@@ -4,18 +4,41 @@ import { useAuth } from "../../hooks/useAuth.jsx";
 import "./Auth.css";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [authMode, setAuthMode] = useState('login'); // 'login', 'signup', 'doctor-signup'
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     name: '',
-    phone: ''
+    phone: '',
+    shortBio: '',
+    price: '',
+    specialtyIds: []
   });
+  const [specialties, setSpecialties] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login, register, isAuthenticated } = useAuth();
+  const { login, register, registerDoctor, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Fetch specialties for doctor registration
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const response = await fetch('/api/specialties');
+        if (response.ok) {
+          const data = await response.json();
+          setSpecialties(data.data.specialties || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch specialties:', err);
+      }
+    };
+
+    if (authMode === 'doctor-signup') {
+      fetchSpecialties();
+    }
+  }, [authMode]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -32,28 +55,46 @@ const Auth = () => {
     setError(''); // Clear error on input change
   };
 
+  const handleSpecialtyChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => parseInt(option.value));
+    setFormData({
+      ...formData,
+      specialtyIds: selectedOptions
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
 
     try {
-      if (isLogin) {
+      if (authMode === 'login') {
         await login({
           email: formData.email,
           password: formData.password
         });
-      } else {
+      } else if (authMode === 'signup') {
         await register({
           email: formData.email,
           password: formData.password,
           name: formData.name,
           phone: formData.phone
         });
+      } else if (authMode === 'doctor-signup') {
+        await registerDoctor({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          phone: formData.phone,
+          shortBio: formData.shortBio,
+          priceCents: Math.round(parseFloat(formData.price) * 100), // Convert to cents
+          specialtyIds: formData.specialtyIds
+        });
       }
       navigate('/');
     } catch (err) {
-      setError(err.message || `${isLogin ? 'Login' : 'Registration'} failed`);
+      setError(err.message || 'Operation failed');
     } finally {
       setIsLoading(false);
     }
@@ -64,23 +105,33 @@ const Auth = () => {
       {/* Toggle buttons */}
       <div className="auth-toggle">
         <button
-          className={isLogin ? "active" : ""}
-          onClick={() => setIsLogin(true)}
+          className={authMode === 'login' ? "active" : ""}
+          onClick={() => setAuthMode('login')}
         >
           login
         </button>
         <button
-          className={!isLogin ? "active" : ""}
-          onClick={() => setIsLogin(false)}
+          className={authMode === 'signup' ? "active" : ""}
+          onClick={() => setAuthMode('signup')}
         >
           signup
+        </button>
+        <button
+          className={authMode === 'doctor-signup' ? "active" : ""}
+          onClick={() => setAuthMode('doctor-signup')}
+        >
+          register as doctor
         </button>
       </div>
 
       {/* Card */}
       <div className="auth-card">
         <div className="logo">🍒</div>
-        <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
+        <h2>
+          {authMode === 'login' && "Welcome Back"}
+          {authMode === 'signup' && "Create Account"}
+          {authMode === 'doctor-signup' && "Doctor Registration"}
+        </h2>
 
         {error && (
           <div className="error-message" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>
@@ -89,8 +140,8 @@ const Auth = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* Signup extra fields */}
-          {!isLogin && (
+          {/* Common fields for signup and doctor signup */}
+          {(authMode === 'signup' || authMode === 'doctor-signup') && (
             <>
               <div className="input-box">
                 <input 
@@ -114,6 +165,53 @@ const Auth = () => {
             </>
           )}
 
+          {/* Doctor-specific fields */}
+          {authMode === 'doctor-signup' && (
+            <>
+              <div className="input-box">
+                <textarea 
+                  name="shortBio"
+                  placeholder="Short Bio (max 500 characters)"
+                  value={formData.shortBio}
+                  onChange={handleInputChange}
+                  rows="3"
+                  maxLength="500"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <input 
+                  type="number" 
+                  name="price"
+                  placeholder="Consultation Fee (₹)"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  min="0"
+                  step="0.01"
+                  required
+                />
+              </div>
+              <div className="input-box">
+                <label>Specialties (Select at least one)</label>
+                <select 
+                  multiple
+                  name="specialtyIds"
+                  value={formData.specialtyIds}
+                  onChange={handleSpecialtyChange}
+                  required
+                  size="4"
+                >
+                  {specialties.map(specialty => (
+                    <option key={specialty.id} value={specialty.id}>
+                      {specialty.name}
+                    </option>
+                  ))}
+                </select>
+                <small>Hold Ctrl/Cmd to select multiple specialties</small>
+              </div>
+            </>
+          )}
+
           <div className="input-box">
             <input 
               type="email" 
@@ -129,7 +227,11 @@ const Auth = () => {
             <input 
               type="password" 
               name="password"
-              placeholder={isLogin ? "Password" : "Create password"} 
+              placeholder={
+                authMode === 'login' ? "Password" : 
+                authMode === 'signup' ? "Create password" : 
+                "Create doctor account password"
+              } 
               value={formData.password}
               onChange={handleInputChange}
               required 
@@ -142,9 +244,13 @@ const Auth = () => {
               className="next-btn"
               disabled={isLoading}
             >
-              {isLoading ? 'Processing...' : (isLogin ? 'Login ➜' : 'Sign Up ➜')}
+              {isLoading ? 'Processing...' : (
+                authMode === 'login' ? 'Login ➜' : 
+                authMode === 'signup' ? 'Sign Up ➜' : 
+                'Register as Doctor ➜'
+              )}
             </button>
-            {isLogin && (
+            {authMode === 'login' && (
               <a href="#" onClick={(e) => e.preventDefault()}>forgot password</a>
             )}
           </div>
