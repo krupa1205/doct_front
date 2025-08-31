@@ -1,234 +1,429 @@
-/* Full page */
+/* Auth Page Styles */
 .auth-page {
-    min-height: 100vh;
-    background: #000;
-    /* Black background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    padding: 20px;
+  background: #000;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
 }
 
-/* Toggle buttons */
+/* Animated Background */
+.mesh-bg {
+  position: fixed;
+  inset: -12vmax;
+  pointer-events: none;
+  z-index: -3;
+  filter: blur(45px) saturate(120%);
+}
+
+.blob {
+  position: absolute;
+  background: radial-gradient(circle at center, rgba(0,255,135,0.15), rgba(0,122,62,0.1) 70%);
+  border-radius: 50%;
+  animation: drift 30s infinite linear;
+  mix-blend-mode: soft-light;
+}
+
+.blob:nth-child(1) {
+  width: 60vmax;
+  height: 60vmax;
+  top: -20vmax;
+  right: -20vmax;
+  animation-duration: 36s;
+  animation-delay: -7s;
+}
+
+.blob:nth-child(2) {
+  width: 40vmax;
+  height: 40vmax;
+  bottom: -15vmax;
+  right: -15vmax;
+  animation-duration: 28s;
+  animation-delay: -1s;
+}
+
+.blob:nth-child(3) {
+  width: 55vmax;
+  height: 55vmax;
+  bottom: -25vmax;
+  right: 10vmax;
+  animation-duration: 42s;
+  animation-delay: -15s;
+}
+
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  40%  { transform: translate3d(6vmax, -4vmax, 0) scale(1.06); }
+  100% { transform: translate3d(-6vmax, 5vmax, 0) scale(0.96); }
+}
+
+/* Auth Card */
+.auth-card {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid rgba(0, 255, 135, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-card.doctor-mode {
+  max-width: 700px;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00ff87, #007a3e);
+}
+
+/* Logo */
+.logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo h1 {
+  font-size: 28px;
+  color: #00ff87;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logo span {
+  color: #ffffff;
+}
+
+/* Toggle Buttons */
 .auth-toggle {
-    position: relative;
-    top: 0px;
-    right: 20px;
-    margin-bottom: 40px;
-    display: flex;
-    background: #111;
-    border-radius: 30px;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 30px;
 }
 
 .auth-toggle button {
-    padding: 10px 18px;
-    border: none;
-    background: transparent;
-    color: #999;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 14px;
-    transition: 0.3s;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  color: #aaaaaa;
+  padding: 12px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.auth-toggle .active {
-    background: #00c853;
-    /* Green */
-    color: #fff;
-    border-radius: 30px;
+.auth-toggle button:hover {
+  border-color: #00ff87;
+  color: #ffffff;
+  transform: translateY(-2px);
 }
 
-/* Card */
-.auth-card {
-    background: #1e1e1e;
-    padding: 40px;
-    border-radius: 10%;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    z-index: 2;
-    max-width: 400px;
-    width: 100%;
-    transition: 0.3s ease;
+.auth-toggle button.active {
+  background: linear-gradient(135deg, rgba(0, 255, 135, 0.2), rgba(0, 122, 62, 0.2));
+  border-color: #00ff87;
+  color: #00ff87;
+  box-shadow: 0 4px 15px rgba(0, 255, 135, 0.3);
 }
 
-.auth-card .logo {
-    font-size: 40px;
-    margin-bottom: 15px;
-}
-
+/* Form Title */
 .auth-card h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
-/* Input */
+/* Error Message */
+.error-message {
+  background: rgba(231, 76, 60, 0.2);
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Form Fields */
 .input-box {
-    background: transparent;
-    border: 2px solid #555;
-    border-radius: 30px;
-    padding: 12px 20px;
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
-.input-box input {
-    background: transparent;
-    border: none;
-    outline: none;
-    width: 100%;
-    color: #fff;
-    font-size: 16px;
+.input-box input,
+.input-box textarea,
+.input-box select {
+  width: 100%;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-box input:focus,
+.input-box textarea:focus,
+.input-box select:focus {
+  border-color: #00ff87;
+  box-shadow: 0 0 0 3px rgba(0, 255, 135, 0.1);
+}
+
+.input-box input::placeholder,
+.input-box textarea::placeholder {
+  color: #aaaaaa;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Image Upload Section */
+.image-upload-section {
+  margin-bottom: 25px;
+}
+
+.image-upload-label {
+  cursor: pointer;
+  display: block;
+}
+
+.image-upload-area {
+  width: 100%;
+  height: 150px;
+  border: 2px dashed rgba(0, 255, 135, 0.5);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.image-upload-area:hover {
+  border-color: #00ff87;
+  background: rgba(0, 255, 135, 0.05);
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: #aaaaaa;
+}
+
+.upload-placeholder i {
+  font-size: 32px;
+  color: #00ff87;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.upload-placeholder span {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+.upload-placeholder small {
+  font-size: 12px;
+  color: #aaaaaa;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+.image-input {
+  display: none;
+}
+
+/* Character Count */
+.char-count {
+  display: block;
+  text-align: right;
+  color: #aaaaaa;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Specialty Selection */
+.specialty-select label {
+  display: block;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.specialty-select select {
+  height: auto;
+  min-height: 120px;
+}
+
+.specialty-select small {
+  display: block;
+  color: #aaaaaa;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.selected-specialties {
+  background: rgba(0, 255, 135, 0.1);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #00ff87;
+}
+
+/* Doctor Fields */
+.doctor-fields {
+  margin-bottom: 25px;
+}
+
+/* Submit Button */
+.next-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #00ff87, #007a3e);
+  border: none;
+  border-radius: 10px;
+  color: #000000;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.next-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 255, 135, 0.4);
+}
+
+.next-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Actions */
 .actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.next-btn {
-    background: #00c853;
-    /* Green button */
-    color: #fff;
-    border: none;
-    border-radius: 30px;
-    padding: 10px 25px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 10px;
-    transition: 0.3s;
-}
-
-.next-btn:hover {
-    background: #00e676;
+  text-align: center;
 }
 
 .actions a {
-    color: #bbb;
-    font-size: 14px;
-    text-decoration: underline;
-    cursor: pointer;
+  color: #00ff87;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
 }
 
-/* Wave at bottom */
+.actions a:hover {
+  color: #ffffff;
+}
+
+/* Session Info */
+.session-info {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 255, 135, 0.2);
+}
+
+.session-info p {
+  color: #aaaaaa;
+  font-size: 12px;
+}
+
+/* Wave Animation */
 .wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    height: 200px;
-    background: #000000;
-    /* Green wave */
-    border-radius: 50% 50% 0 0;
-    transform: translateX(-25%);
-    z-index: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 135, 0.1) 50%, transparent 70%);
+  animation: wave 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .auth-card {
-        padding: 30px;
-        max-width: 90%;
-    }
-
-    .auth-card h2 {
-        font-size: 18px;
-    }
-
-    .next-btn {
-        padding: 10px 20px;
-    }
+  .auth-page {
+    padding: 15px;
+  }
+  
+  .auth-card {
+    padding: 30px 20px;
+  }
+  
+  .auth-card.doctor-mode {
+    max-width: 100%;
+  }
+  
+  .auth-toggle {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .image-upload-area {
+    height: 120px;
+  }
+  
+  .upload-placeholder i {
+    font-size: 24px;
+  }
+  
+  .upload-placeholder span {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
-    .auth-toggle {
-        top: 15px;
-        right: 15px;
-    }
-
-    .auth-toggle button {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    .auth-card {
-        padding: 20px;
-        max-width: 100%;
-    }
-
-    .auth-card h2 {
-        font-size: 16px;
-    }
-
-    .input-box {
-        padding: 10px 15px;
-    }
-
-    .actions {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .next-btn {
-        width: 100%;
-        text-align: center;
-    }
+  .auth-card {
+    padding: 25px 15px;
+  }
+  
+  .auth-card h2 {
+    font-size: 20px;
+  }
+  
+  .logo h1 {
+    font-size: 24px;
+  }
 }
-/* Additional styles for doctor registration */
-.auth-toggle {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  .auth-toggle button {
-    padding: 0.5rem 1rem;
-    margin: 0 0.5rem;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-  }
-  
-  .auth-toggle button.active {
-    border-bottom: 2px solid #007bff;
-    font-weight: bold;
-  }
-  
-  .auth-card textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    resize: vertical;
-  }
-  
-  .auth-card select[multiple] {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-  
-  .auth-card label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .auth-card small {
-    display: block;
-    margin-top: 0.25rem;
-    color: #666;
-    font-size: 0.8rem;
-  }

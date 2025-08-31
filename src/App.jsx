@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './hooks/useAuth.jsx';
+import { AuthProvider } from './hooks/useAuth';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Brands from './components/Brands';
@@ -16,6 +16,7 @@ import Auth from './components/Login/Auth';
 import Pharmacy from './components/Pharmacy/Pharmacy';
 import Payment from './components/Payment/Payment';
 import Price from './components/Price/Price';
+import PatientDashboard from './components/PatientDashboard/PatientDashboard';
 
 function HomePage() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route path="/Pharmacy" element={<Pharmacy />} />
             <Route path="/Payment" element={<Payment />} />
             <Route path="/Price" element={<Price />} />
+            <Route path="/dashboard" element={<PatientDashboard />} />
           </Routes>
           <Footer />
         </div>

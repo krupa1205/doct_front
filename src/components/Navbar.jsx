@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { logo } from '../assets';
-import { useAuth } from '../hooks/useAuth.jsx';
-import ProfileDropdown from './ProfileDropdown/ProfileDropdown';
+import { useAuth } from '../hooks/useAuth';
+import UserProfile from './UserProfile/UserProfile';
 
 const navLinks = [
   { title: "Home", href: "/" },
@@ -50,7 +50,7 @@ const Navbar = () => {
 
           <div className="hidden md:flex items-center gap-4">
             {isAuthenticated ? (
-              <ProfileDropdown />
+              <UserProfile />
             ) : (
               <button
                 onClick={() => navigate('/login')}

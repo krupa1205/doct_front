@@ -51,6 +51,12 @@ class ApiService {
         throw new Error(data.message || 'Registration failed');
       }
 
+      // Store token and user data if registration includes auto-login
+      if (data.data && data.data.token) {
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+      }
+
       return data;
     } catch (error) {
       console.error('Registration error:', error);
@@ -103,6 +109,25 @@ class ApiService {
       return data;
     } catch (error) {
       console.error('Get user error:', error);
+      throw error;
+    }
+  }
+
+  async updateProfile(userData) {
+    try {
+      const response = await makeAuthenticatedRequest(`${API_BASE_URL}/users/profile`, {
+        method: 'PUT',
+        body: JSON.stringify(userData),
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update profile');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error updating profile:', error);
       throw error;
     }
   }
